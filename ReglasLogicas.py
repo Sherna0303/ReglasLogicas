@@ -39,17 +39,20 @@ class SistemaRutas(KnowledgeEngine):
 
     @Rule(Exploracion(estacion=MATCH.est, tiempo=MATCH.tiempo, camino=MATCH.camino, precio=MATCH.precio), DestinoUsuario(destino=MATCH.dest))
     def verificar_destino(self, est, tiempo, dest, camino, precio):
-        """Si se alcanza el destino, se compara si es la mejor ruta encontrada."""
-        if est == dest and tiempo < self.mejor_tiempo and self.costo_beneficio == False: 
-            self.mejor_tiempo = tiempo
-            self.mejor_precio = precio
-            self.mejor_camino = list(camino)
-            self.declare(MejorRuta(ruta=self.mejor_camino, tiempo=self.mejor_tiempo, precio=self.mejor_precio))
-        elif est == dest and tiempo < self.mejor_tiempo and precio < self.mejor_precio:
-            self.mejor_tiempo = tiempo
-            self.mejor_precio = precio
-            self.mejor_camino = list(camino)
-            self.declare(MejorRuta(ruta=self.mejor_camino, tiempo=self.mejor_tiempo, precio=self.mejor_precio))
+        """Si se alcanza el destino, se compara si es la mejor ruta encontrada según el criterio seleccionado."""
+        if est == dest:
+            if not self.costo_beneficio:
+                if tiempo < self.mejor_tiempo:
+                    self.mejor_tiempo = tiempo
+                    self.mejor_precio = precio
+                    self.mejor_camino = list(camino)
+                    self.declare(MejorRuta(ruta=self.mejor_camino, tiempo=self.mejor_tiempo, precio=self.mejor_precio))
+            else:
+                if precio < self.mejor_precio:
+                    self.mejor_tiempo = tiempo
+                    self.mejor_precio = precio
+                    self.mejor_camino = list(camino)
+                    self.declare(MejorRuta(ruta=self.mejor_camino, tiempo=self.mejor_tiempo, precio=self.mejor_precio))
 
     def iniciar_busqueda(self, origen, destino, costo_beneficio_input):
         """Inicializa la búsqueda desde la estación de origen."""
