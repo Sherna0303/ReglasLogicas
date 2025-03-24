@@ -51,10 +51,10 @@ class SistemaRutas(KnowledgeEngine):
             self.mejor_camino = list(camino)
             self.declare(MejorRuta(ruta=self.mejor_camino, tiempo=self.mejor_tiempo, precio=self.mejor_precio))
 
-    def iniciar_busqueda(self, origen, destino):
+    def iniciar_busqueda(self, origen, destino, costo_beneficio_input):
         """Inicializa la búsqueda desde la estación de origen."""
         
-        if costo_beneficio == "Y":
+        if costo_beneficio_input == "Y":
             self.costo_beneficio = True
         else:
             self.costo_beneficio = False
@@ -82,7 +82,7 @@ rutas = [
 
 origen = input("Ingrese la estación de origen: ").strip().upper()
 destino = input("Ingrese la estación de destino: ").strip().upper()
-costo_beneficio = input("Desea considerar el costo de transporte (y/n): ").strip().upper()
+costo_beneficio_input = input("Desea considerar el costo de transporte (y/n): ").strip().upper()
 
 engine = SistemaRutas()
-engine.iniciar_busqueda(origen, destino)
+engine.iniciar_busqueda(origen, destino, costo_beneficio_input)
